@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stewart Light Calculator</title>
+    <meta
+      name="description"
+      content="Client-side Stewart Light calculator for acid-base reasoning using Pyodide and a Python numerical core."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Stewart Light</p>
+        <h1>Acid-base calculator</h1>
+        <p class="lede">
+          Stewart Light augments the traditional Boston-rule respiratory assessment with a
+          pragmatic bedside decomposition of the metabolic component into strong-ion/chloride
+          effects, albumin effects, and residual unmeasured ions.
+        </p>
+      </div>
+      <aside class="runtime-card" aria-live="polite">
+        <h2>Runtime</h2>
+        <p id="runtime-status" data-state="loading">Loading Python engine.</p>
+        <button id="retry-engine" class="secondary-button" type="button" hidden>Retry</button>
+      </aside>
+    </header>
+
+    <main class="app-shell">
+      <section class="input-panel" aria-labelledby="input-title">
+        <div class="section-heading">
+          <p class="eyebrow">Inputs</p>
+          <h2 id="input-title">Blood gas and chemistry</h2>
+        </div>
+
+        <form id="calculator-form" novalidate>
+          <fieldset>
+            <legend>Blood gas</legend>
+            <div class="field-grid">
+              <label>
+                <span>pH</span>
+                <input id="ph" name="ph" inputmode="decimal" autocomplete="off" required />
+              </label>
+              <label>
+                <span>PaCO2</span>
+                <input id="pco2" name="pco2" inputmode="decimal" autocomplete="off" required />
+              </label>
+              <label>
+                <span>HCO3</span>
+                <input id="hco3" name="hco3" inputmode="decimal" autocomplete="off" required />
+              </label>
+              <label>
+                <span>SBE</span>
+                <input id="sbe" name="sbe" inputmode="decimal" autocomplete="off" required />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Chemistry</legend>
+            <div class="field-grid">
+              <label>
+                <span>Na</span>
+                <input id="sodium" name="sodium" inputmode="decimal" autocomplete="off" required />
+              </label>
+              <label>
+                <span>Cl</span>
+                <input id="chloride" name="chloride" inputmode="decimal" autocomplete="off" required />
+              </label>
+              <label>
+                <span>Albumin</span>
+                <input id="albumin" name="albumin" inputmode="decimal" autocomplete="off" required />
+              </label>
+              <label>
+                <span>Lactate <small>optional</small></span>
+                <input id="lactate" name="lactate" inputmode="decimal" autocomplete="off" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Units</legend>
+            <div class="unit-row">
+              <label>
+                <span>PaCO2 unit</span>
+                <select id="pco2-unit" name="pco2_unit">
+                  <option value="mmHg">mmHg</option>
+                  <option value="kPa">kPa</option>
+                </select>
+              </label>
+              <label>
+                <span>Albumin unit</span>
+                <select id="albumin-unit" name="albumin_unit">
+                  <option value="g/L">g/L</option>
+                  <option value="g/dL">g/dL</option>
+                </select>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Optional clinical context</legend>
+            <div class="field-grid optional-field-grid">
+              <label>
+                <span>Phosphate <small>optional, mmol/L</small></span>
+                <input id="phosphate" name="phosphate" inputmode="decimal" autocomplete="off" />
+              </label>
+            </div>
+            <label class="checkbox-row">
+              <input id="chronic-hypercapnia" name="suspect_chronic_hypercapnia" type="checkbox" />
+              <span>Suspect chronic hypercapnia / chronic CO2 retention</span>
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Result layers</legend>
+            <div class="toggle-stack">
+              <label class="checkbox-row">
+                <input id="toggle-primary" type="checkbox" checked />
+                <span>Primary Stewart Light view</span>
+              </label>
+              <label class="checkbox-row">
+                <input id="toggle-advanced" type="checkbox" />
+                <span>Advanced bedside decomposition</span>
+              </label>
+              <label class="checkbox-row">
+                <input id="toggle-compensation-map" type="checkbox" />
+                <span>Compensation map</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="example-row">
+            <label for="example-select">Example case</label>
+            <select id="example-select">
+              <option value="unmeasured-ion">Unmeasured-ion acidosis</option>
+              <option value="hyperchloremic">Hyperchloremic / SID acidosis</option>
+              <option value="hypoalbuminemic">Hypoalbuminemic alkalosis</option>
+              <option value="masked">Masked near-normal SBE</option>
+              <option value="chronic-hypercapnia">Chronic hypercapnia caution</option>
+            </select>
+          </div>
+
+          <div id="form-errors" class="message-list error-list" role="alert" hidden></div>
+          <div id="form-warnings" class="message-list warning-list" role="status" hidden></div>
+
+          <div class="action-row">
+            <button id="calculate-button" type="submit" disabled>Calculate</button>
+            <button id="reset-button" class="secondary-button" type="button">Reset</button>
+            <button id="load-example-button" class="secondary-button" type="button">
+              Load example
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="output-panel" aria-labelledby="output-title">
+        <div class="section-heading">
+          <p class="eyebrow">Results</p>
+          <h2 id="output-title">Interpretation</h2>
+        </div>
+
+        <article id="headline-card" class="result-block" aria-live="polite">
+          <p class="empty-state">
+            Enter values and calculate to review the Boston view and Stewart Light partition.
+          </p>
+        </article>
+
+        <article id="base-excess-card" class="result-block" aria-labelledby="base-excess-title">
+          <h3 id="base-excess-title">What base excess means — and why it can mislead</h3>
+          <p class="body-copy">
+            SBE summarizes the metabolic component; it is not a mechanism. SBE near zero can mean
+            true metabolic normality or equal-and-opposite metabolic processes, so electrolytes,
+            albumin, lactate, and clinical context still matter.
+          </p>
+          <details id="base-excess-details">
+            <summary>Learn more</summary>
+            <div class="mini-gallery" aria-label="Base excess mini examples">
+              <figure class="mini-schematic" data-mini-example="ui-acidosis">
+                <svg viewBox="0 0 180 78" role="img" aria-label="Isolated UI acidosis mini example">
+                  <line x1="90" x2="90" y1="14" y2="56" />
+                  <rect x="28" y="26" width="62" height="18" rx="4" />
+                  <text x="59" y="39" text-anchor="middle">UI -8</text>
+                </svg>
+                <figcaption>Isolated lactate / UI acidosis</figcaption>
+              </figure>
+              <figure class="mini-schematic" data-mini-example="hypochloremic-alkalosis">
+                <svg viewBox="0 0 180 78" role="img" aria-label="Isolated hypochloremic alkalosis mini example">
+                  <line x1="90" x2="90" y1="14" y2="56" />
+                  <rect x="90" y="26" width="58" height="18" rx="4" />
+                  <text x="119" y="39" text-anchor="middle">Cl +7</text>
+                </svg>
+                <figcaption>Isolated hypochloremic alkalosis</figcaption>
+              </figure>
+              <figure class="mini-schematic" data-mini-example="offset">
+                <svg viewBox="0 0 180 78" role="img" aria-label="Offset net-normal SBE mini example">
+                  <line x1="90" x2="90" y1="14" y2="56" />
+                  <rect x="38" y="22" width="52" height="16" rx="4" />
+                  <rect x="90" y="42" width="52" height="16" rx="4" />
+                  <text x="64" y="34" text-anchor="middle">-6</text>
+                  <text x="116" y="54" text-anchor="middle">+6</text>
+                </svg>
+                <figcaption>Offset case, net SBE ≈ 0</figcaption>
+              </figure>
+            </div>
+            <p class="body-copy">A normal total does not guarantee a simple process.</p>
+          </details>
+        </article>
+
+        <article
+          id="comparison-card"
+          class="result-block primary-view-card"
+          aria-labelledby="comparison-title"
+        >
+          <h3 id="comparison-title">What does Stewart Light add beyond the Boston rules?</h3>
+          <p class="body-copy">
+            Stewart Light keeps the traditional compensation assessment, then partitions the
+            metabolic component into strong-ion/chloride effects, albumin effects, and residual
+            unmeasured ions.
+          </p>
+          <div class="comparison-grid">
+            <section class="comparison-column" aria-labelledby="boston-title">
+              <h4 id="boston-title">Traditional / Boston view</h4>
+              <dl id="boston-details" class="detail-list"></dl>
+            </section>
+            <section class="comparison-column" aria-labelledby="stewart-title">
+              <h4 id="stewart-title">Stewart Light adds</h4>
+              <p id="what-adds" class="body-copy"></p>
+              <dl id="stewart-details" class="detail-list compact-detail-list"></dl>
+            </section>
+          </div>
+          <p id="comparison-caution" class="compact-note" hidden></p>
+          <dl id="comparison-extra" class="detail-list comparison-extra"></dl>
+        </article>
+
+        <article id="anion-gap-card" class="result-block" aria-labelledby="anion-gap-title">
+          <h3 id="anion-gap-title">Anion gap context</h3>
+          <dl id="anion-gap-details" class="detail-list"></dl>
+          <ul id="anion-gap-notes" class="annotation-list"></ul>
+        </article>
+
+        <article id="hydrogen-card" class="result-block compact-result" aria-labelledby="hydrogen-title">
+          <h3 id="hydrogen-title">pH → H+</h3>
+          <p id="hydrogen-chip" class="metric-chip"></p>
+          <p id="hydrogen-note" class="body-copy"></p>
+        </article>
+
+        <article id="follow-up-card" class="result-block" aria-labelledby="follow-up-title" hidden>
+          <h3 id="follow-up-title">Follow-up considerations</h3>
+          <ul id="follow-up-triggers" class="annotation-list"></ul>
+          <ul id="follow-up-prompts"></ul>
+          <p id="toxicology-caveat" class="compact-note"></p>
+        </article>
+
+        <article
+          id="partition-visual-card"
+          class="result-block primary-view-card"
+          aria-labelledby="partition-title"
+        >
+          <h3 id="partition-title">How is the base excess partitioned?</h3>
+          <p class="body-copy">
+            The quantitative chart is the source of truth for the decomposition. Each step starts
+            where the previous component ended, so the final marker should align with measured SBE.
+          </p>
+          <div class="visual-scroll" aria-live="polite">
+            <div id="partition-chart" class="partition-chart"></div>
+          </div>
+          <p id="partition-summary" class="visual-summary empty-state">
+            Calculate a case to see component direction and magnitude.
+          </p>
+          <ul id="partition-annotations" class="annotation-list"></ul>
+        </article>
+
+        <article
+          id="teaching-card"
+          class="result-block primary-view-card"
+          aria-labelledby="teaching-title"
+        >
+          <h3 id="teaching-title">Why can the total look normal even when components are not?</h3>
+          <p class="body-copy">
+            This simplified calliper view shows the sodium-chloride gap as the SID anchor, then
+            separates weak-acid and residual unmeasured-ion effects. This is an educational bedside
+            simplification, not a full physicochemical reconstruction.
+          </p>
+          <div class="visual-scroll">
+            <div id="teaching-diagram" class="teaching-diagram"></div>
+          </div>
+          <p id="teaching-summary" class="visual-summary empty-state">
+            Calculate a case to see the conceptual SID, albumin, bicarbonate, and UI spaces.
+          </p>
+        </article>
+
+        <article id="advanced-bedside-card" class="result-block advanced-panel" aria-labelledby="advanced-bedside-title" hidden>
+          <h3 id="advanced-bedside-title">
+            Supplementary bedside decomposition (water / chloride / albumin / other)
+          </h3>
+          <p id="advanced-bedside-note" class="body-copy"></p>
+          <dl id="advanced-bedside-details" class="detail-list"></dl>
+        </article>
+
+        <article id="compensation-map-card" class="result-block advanced-panel" aria-labelledby="compensation-map-title" hidden>
+          <h3 id="compensation-map-title">Compensation map (educational)</h3>
+          <p class="body-copy">
+            This overlay is a visual cross-check, not a replacement for Boston-rule compensation.
+          </p>
+          <div id="compensation-map" class="compensation-map"></div>
+          <p id="compensation-map-note" class="visual-summary"></p>
+        </article>
+
+        <article id="lab-caveats-card" class="result-block" aria-labelledby="lab-caveats-title">
+          <h3 id="lab-caveats-title">Laboratory caveats</h3>
+          <ul class="annotation-list">
+            <li>Use values from the same timepoint and specimen context whenever possible.</li>
+            <li>Blood gas results can be affected by air bubbles and delayed processing.</li>
+            <li>Compensation equations are approximations, not absolute truths.</li>
+            <li>Normal anion-gap ranges vary by laboratory method.</li>
+            <li>A normal osmolal gap does not reliably exclude toxic alcohol exposure.</li>
+          </ul>
+        </article>
+
+        <article class="result-block" aria-labelledby="cautions-title">
+          <h3 id="cautions-title">Limitations and cautions</h3>
+          <ul id="limitations-list"></ul>
+          <ul id="cautions-list"></ul>
+        </article>
+
+        <article class="result-block" aria-labelledby="normalized-title">
+          <h3 id="normalized-title">Normalized input details</h3>
+          <dl id="normalized-details" class="detail-list"></dl>
+        </article>
+
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        This application is an educational and clinical reasoning aid. It is not a medical device,
+        does not replace clinician judgment, and should not be used as the sole basis for diagnosis
+        or treatment.
+      </p>
+      <p>
+        Calculations run entirely in the browser. No patient data are transmitted to a server by
+        this app, and entered values are not stored in the URL or local storage by default.
+      </p>
+    </footer>
+  </body>
+</html>
