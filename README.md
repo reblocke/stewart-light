@@ -71,6 +71,8 @@ conversion helpers live in `stewartlight.units`. Optional phosphate is accepted 
 
 ## Browser App
 
+Deployed app: [Stewart Light Calculator](https://reblocke.github.io/stewart-light/).
+
 The static web app provides a single-page workflow with blood-gas and chemistry inputs, explicit
 unit controls, example cases, structured Boston and Stewart Light results, cautions, and a
 visual explanation layer. `web/app.js` is the browser module entrypoint; focused modules under
