@@ -7,7 +7,8 @@
 
 ## Repo Map
 - `src/stewartlight/` - browser-friendly Python package and numerical source of truth.
-- `web/` - static client-only app shell, worker, styles, and staged Python package.
+- `web/` - static client-only app shell, worker, styles, browser modules, and staged Python package.
+- `web/js/` - browser-native ES modules for inputs, worker lifecycle, rendering, and visuals.
 - `scripts/stage_web_python.py` - copies `src/stewartlight/` into `web/assets/py/stewartlight/`.
 - `tests/` - unit, smoke, contract, staging, and Playwright E2E tests.
 - `docs/` - clinical scope, privacy, validation, references, deployment, decisions, and ADRs.

@@ -300,6 +300,20 @@ def test_ag_followup_toxicology_caveat_lab_caveats_and_hydrogen_chip(
     expect(page.locator("#lab-caveats-card")).to_contain_text("same timepoint")
 
 
+def test_calculation_does_not_persist_inputs_to_url_or_browser_storage(
+    app_url: str, page: Page
+) -> None:
+    open_ready_app(app_url, page)
+
+    fill_valid_case(page)
+    submit_and_wait(page)
+
+    assert page.evaluate("window.location.search") == ""
+    assert page.evaluate("window.location.hash") == ""
+    assert page.evaluate("window.localStorage.length") == 0
+    assert page.evaluate("window.sessionStorage.length") == 0
+
+
 def test_chronic_hypercapnia_excess_sid_overlay(app_url: str, page: Page) -> None:
     open_ready_app(app_url, page)
 

@@ -17,3 +17,7 @@ database, log sink, or URL query string.
 
 Privacy-affecting changes should be reviewed with `.agents/skills/privacy-no-phi-review/SKILL.md`
 and documented in `docs/DECISIONS.md` or an ADR.
+
+The automated test suite includes guardrails for browser JavaScript storage, telemetry, and console
+logging APIs, plus an E2E check that calculations do not write entered values to the URL or browser
+storage.

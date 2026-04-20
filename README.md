@@ -73,10 +73,10 @@ conversion helpers live in `stewartlight.units`. Optional phosphate is accepted 
 
 The static web app provides a single-page workflow with blood-gas and chemistry inputs, explicit
 unit controls, example cases, structured Boston and Stewart Light results, cautions, and a
-visual explanation layer. The primary visual is an SVG base-excess partition chart, supported by
-an original simplified calliper diagram and a Traditional vs Stewart Light comparison card. The
-browser sends calculations to `web/pyodide_worker.js`, which normalizes units and calls the staged
-Python package through Pyodide.
+visual explanation layer. `web/app.js` is the browser module entrypoint; focused modules under
+`web/js/` handle examples, input parsing, worker lifecycle, textual rendering, and SVG visuals.
+The browser sends calculations to `web/pyodide_worker.js`, which normalizes units and calls the
+staged Python package through Pyodide.
 
 Advanced educational overlays add corrected anion-gap context, a pH-to-hydrogen teaching chip,
 laboratory caveats, a supplementary water/chloride/albumin/other bedside decomposition, and an
@@ -88,6 +88,7 @@ replace clinical context.
 - `src/stewartlight/` - Python package and numerical core.
 - `scripts/` - automation such as staging the Python package for the browser.
 - `web/` - static GitHub Pages app shell.
+- `web/js/` - browser-native ES modules used by `web/app.js`.
 - `web/assets/py/stewartlight/` - staged copy of the Python package consumed by Pyodide.
 - `tests/` - unit, staging, smoke, and Playwright E2E tests.
 - `docs/` - architecture decisions, clinical scope, references, and deployment notes.
@@ -96,9 +97,9 @@ replace clinical context.
 
 The browser app has no backend, database, telemetry, or PHI storage. `make stage-web` copies the
 Python package into `web/assets/py/`, and `web/pyodide_worker.js` loads that staged package inside
-Pyodide. The JavaScript UI performs form validation and display formatting, but the numerical
-calculation remains in Python. This keeps local tests and browser execution pointed at the same
-implementation.
+Pyodide. The JavaScript UI modules perform form validation and display formatting, but the
+numerical calculation remains in Python. This keeps local tests and browser execution pointed at
+the same implementation.
 
 ## Deployment
 

@@ -6,6 +6,8 @@
 - `make e2e` runs the Chromium Playwright browser suite.
 - `make verify` runs format check, lint, non-E2E tests, and E2E tests.
 - GitHub Actions runs the same verification path before deployment.
+- Guardrail tests check local skill references, staged package parity, public result shape,
+  conservative public copy, and no-storage/no-telemetry browser code.
 
 ## Validation Expectations
 
@@ -14,6 +16,8 @@
 - Changes to clinical interpretation require tests or fixtures that pin the user-visible wording or
   returned payload fields when practical.
 - Any change to assumptions, units, or clinical scope must be recorded in `docs/DECISIONS.md` or an ADR.
+- Browser module refactors should preserve `web/app.js` as the module entrypoint and keep
+  `web/pyodide_worker.js` contract-compatible with existing tests.
 
 ## Out Of Scope
 

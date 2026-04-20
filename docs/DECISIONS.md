@@ -21,6 +21,27 @@ under `.agents/skills/`. Use `docs/DECISIONS.md` or ADRs under `docs/adr/` for d
 - Clinical, privacy, validation, and public-copy reviews have explicit triggers.
 - Workflow guidance can stay synchronized with the package-first static-app structure.
 
+## 2026-04-19: Browser modules align with focused review skills
+
+**Context:**
+
+The browser coordinator had grown to own examples, form parsing, worker lifecycle, textual result
+rendering, SVG visuals, and view toggles in one file. The repository now has focused local skills
+for implementation strategy, browser/Pyodide checks, privacy, public copy, and verification.
+
+**Decision:**
+
+Keep `web/app.js` as the static app's ES module entrypoint, but move focused browser behavior into
+plain modules under `web/js/`. Keep `web/pyodide_worker.js` as a classic worker and keep all
+calculation logic in the staged Python package.
+
+**Consequences:**
+
+- Browser changes can be reviewed against smaller responsibility boundaries.
+- The static site still needs no bundler, framework, backend, telemetry, or storage.
+- Guardrail tests now check skill references, staged Python parity, public-copy phrases, browser
+  privacy APIs, public result shape, and URL/storage non-persistence after calculation.
+
 ## 2026-04-19: Static GitHub Pages app with Python source of truth
 
 **Context:**
