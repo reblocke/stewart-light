@@ -2,6 +2,25 @@
 
 Use this file to record decisions that are hard to infer from the code alone.
 
+## 2026-04-19: Compact agent instructions with focused skills
+
+**Context:**
+
+The repository needs repeatable agent workflows for implementation planning, verification,
+clinical scope, privacy, public copy, provenance, and Pyodide checks without making root
+instructions oversized.
+
+**Decision:**
+
+Keep root `AGENTS.md` short and repo-specific. Move recurring workflows into focused local skills
+under `.agents/skills/`. Use `docs/DECISIONS.md` or ADRs under `docs/adr/` for durable decisions.
+
+**Consequences:**
+
+- Agents get required constraints with less prompt overhead.
+- Clinical, privacy, validation, and public-copy reviews have explicit triggers.
+- Workflow guidance can stay synchronized with the package-first static-app structure.
+
 ## 2026-04-19: Static GitHub Pages app with Python source of truth
 
 **Context:**
