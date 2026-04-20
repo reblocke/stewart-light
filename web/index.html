@@ -17,9 +17,14 @@
         <p class="eyebrow">Stewart Light</p>
         <h1>Acid-base calculator</h1>
         <p class="lede">
-          Stewart Light augments the traditional Boston-rule respiratory assessment with a
-          pragmatic bedside decomposition of the metabolic component into strong-ion/chloride
-          effects, albumin effects, and residual unmeasured ions.
+          Start with the familiar Boston question: does the respiratory compensation fit? Then
+          use Stewart Light to ask what the metabolic SBE is made of: strong-ion/chloride effects,
+          albumin effects, and residual unmeasured ions.
+        </p>
+        <p class="header-links">
+          <a href="https://doi.org/10.1007/s00134-026-08416-3" rel="noreferrer">
+            Original Stewart Light manuscript
+          </a>
         </p>
       </div>
       <aside class="runtime-card" aria-live="polite">
@@ -30,6 +35,25 @@
     </header>
 
     <main class="app-shell">
+      <section class="why-panel" aria-labelledby="why-title">
+        <div>
+          <p class="eyebrow">Why this exists</p>
+          <h2 id="why-title">Boston rules show compensation; Stewart Light shows composition.</h2>
+        </div>
+        <p>
+          Traditional bicarbonate/SBE-plus-compensation reasoning is often clear when one process
+          dominates. ICU acid-base problems are frequently less transparent: chloride shifts,
+          hypoalbuminemia, lactate, unmeasured ions, fluids, diuresis, and chronic CO2 retention can
+          move in opposite directions and make the total SBE look deceptively simple.
+        </p>
+        <p>
+          This tool keeps Boston-style compensation assessment visible, then partitions measured
+          SBE into chloride/SID, albumin/weak-acid, and residual unmeasured-ion components. It is a
+          bedside teaching approximation, not a full physicochemical reconstruction or a
+          replacement for clinical context.
+        </p>
+      </section>
+
       <section class="input-panel" aria-labelledby="input-title">
         <div class="section-heading">
           <p class="eyebrow">Inputs</p>
@@ -165,7 +189,8 @@
 
         <article id="headline-card" class="result-block" aria-live="polite">
           <p class="empty-state">
-            Enter values and calculate to review the Boston view and Stewart Light partition.
+            Enter values and calculate to review respiratory compensation, then inspect what the
+            metabolic SBE is made of.
           </p>
         </article>
 
@@ -174,7 +199,8 @@
           <p class="body-copy">
             SBE summarizes the metabolic component; it is not a mechanism. SBE near zero can mean
             true metabolic normality or equal-and-opposite metabolic processes, so electrolytes,
-            albumin, lactate, and clinical context still matter.
+            albumin, lactate, and clinical context still matter. Stewart Light is useful because it
+            makes those hidden offsets visible instead of leaving them buried in one total number.
           </p>
           <details id="base-excess-details">
             <summary>Learn more</summary>
@@ -219,7 +245,8 @@
           <p class="body-copy">
             Stewart Light keeps the traditional compensation assessment, then partitions the
             metabolic component into strong-ion/chloride effects, albumin effects, and residual
-            unmeasured ions.
+            unmeasured ions. The result is a Boston-plus view: compensation on one side, metabolic
+            composition on the other.
           </p>
           <div class="comparison-grid">
             <section class="comparison-column" aria-labelledby="boston-title">
@@ -264,6 +291,8 @@
           <p class="body-copy">
             The quantitative chart is the source of truth for the decomposition. Each step starts
             where the previous component ended, so the final marker should align with measured SBE.
+            Large opposing segments explain why a near-normal total can still be educationally
+            important.
           </p>
           <div class="visual-scroll" aria-live="polite">
             <div id="partition-chart" class="partition-chart"></div>
@@ -283,7 +312,8 @@
           <p class="body-copy">
             This simplified calliper view shows the sodium-chloride gap as the SID anchor, then
             separates weak-acid and residual unmeasured-ion effects. This is an educational bedside
-            simplification, not a full physicochemical reconstruction.
+            simplification, not a full physicochemical reconstruction. Use it as a mental model for
+            how chloride/SID, albumin, and unmeasured ions can push SBE in different directions.
           </p>
           <div class="visual-scroll">
             <div id="teaching-diagram" class="teaching-diagram"></div>

@@ -118,6 +118,18 @@ h4 {
   line-height: 1.6;
 }
 
+.header-links {
+  margin: 16px 0 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+a {
+  color: var(--accent-strong);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
 .runtime-card,
 .input-panel,
 .result-block {
@@ -155,6 +167,28 @@ h4 {
   gap: 24px;
   align-items: start;
   padding-bottom: 36px;
+}
+
+.why-panel {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(260px, 0.8fr) repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  border-block: 1px solid var(--line);
+  padding: 24px 0;
+}
+
+.why-panel h2 {
+  max-width: 440px;
+  margin-bottom: 0;
+  font-size: clamp(1.35rem, 2.3vw, 2rem);
+  line-height: 1.12;
+}
+
+.why-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
 .input-panel {
@@ -656,7 +690,8 @@ summary {
 
 @media (max-width: 900px) {
   .app-header,
-  .app-shell {
+  .app-shell,
+  .why-panel {
     grid-template-columns: 1fr;
   }
 

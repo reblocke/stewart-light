@@ -4,10 +4,26 @@ Stewart Light Calculator is a static, client-side educational app for Stewart Li
 interpretation. The numerical source of truth lives in Python and the browser shell loads that
 same package with Pyodide.
 
-The Stewart Light approach combines pH-adjusted base-excess partitioning with assessment of
-respiratory compensation using Boston rules. The Python API and browser app calculate the Stewart
-Light partition, optional lactate subpartition, Boston-style compensation assessment, and cautious
-educational narrative.
+- Live app: [Stewart Light Calculator](https://reblocke.github.io/stewart-light/)
+- Original manuscript: [A pragmatic approach to complex acid base disturbances of critical
+  illness: the "Stewart light"](https://doi.org/10.1007/s00134-026-08416-3)
+
+## Why This Matters
+
+The Stewart Light paper is best understood as a hybrid Boston-plus bedside method. It keeps the
+familiar clinical context, pH, severity, and Boston compensation assessment, then adds a
+pH-adjusted partition of the metabolic SBE into strong-ion/chloride effects, albumin/weak-acid
+effects, and residual unmeasured ions. The goal is not to replace classical acid-base reasoning,
+but to make complex ICU acid-base states easier to teach and inspect when several processes are
+moving at the same time.
+
+The key practical distinction is that Boston rules ask whether respiratory compensation is
+appropriate, while Stewart Light asks what the metabolic abnormality is made of. A normal total
+SBE can reflect true metabolic normality, or it can be the numerical sum of opposing
+abnormalities. Separating the chloride/SID, albumin, and residual unmeasured-ion components helps
+make those offsets visible in settings such as DKA, sepsis, intoxications, vomiting, fluid therapy,
+diuresis, and renal replacement therapy, while remaining a pragmatic bedside approximation rather
+than a full physicochemical reconstruction.
 
 ## Medical Disclaimer
 
@@ -70,8 +86,6 @@ conversion helpers live in `stewartlight.units`. Optional phosphate is accepted 
 `mmol/L` for the supplementary bedside decomposition only.
 
 ## Browser App
-
-Deployed app: [Stewart Light Calculator](https://reblocke.github.io/stewart-light/).
 
 The static web app provides a single-page workflow with blood-gas and chemistry inputs, explicit
 unit controls, example cases, structured Boston and Stewart Light results, cautions, and a
