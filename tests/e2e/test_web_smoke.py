@@ -74,7 +74,7 @@ def test_valid_manual_submission_returns_structured_results(app_url: str, page: 
     )
     expect(page.locator("body")).not_to_contain_text("Visualization placeholder")
     expect(page.locator("#base-excess-card")).to_contain_text(
-        "SBE summarizes the metabolic component"
+        "several types of processes that can result in the same HCO3 / SBE"
     )
     expect(page.locator("#anion-gap-card")).to_contain_text("Anion gap context")
     expect(page.locator("#hydrogen-card")).to_contain_text("pH")
@@ -117,6 +117,61 @@ def test_unit_conversion_displays_normalized_values(app_url: str, page: Page) ->
     expect(page.locator("#normalized-details")).to_contain_text("entered as 4.2 g/dL")
 
 
+def test_example_selector_starts_blank_then_populates_and_calculates(
+    app_url: str, page: Page
+) -> None:
+    open_ready_app(app_url, page)
+
+    expect(page.locator("#example-select")).to_have_value("")
+    expect(page.locator("#ph")).to_have_value("")
+    expect(page.locator("#load-example-button")).to_be_disabled()
+
+    page.locator("#example-select").select_option("unmeasured-ion")
+
+    expect(page.locator("#ph")).to_have_value("7.22")
+    expect(page.locator("#pco2")).to_have_value("25")
+    expect(page.locator("#hco3")).to_have_value("10")
+    expect(page.locator("#sbe")).to_have_value("-18")
+    expect(page.locator("#sodium")).to_have_value("140")
+    expect(page.locator("#chloride")).to_have_value("104")
+    expect(page.locator("#albumin")).to_have_value("40")
+    expect(page.locator("#lactate")).to_have_value("6")
+    expect(page.locator("#load-example-button")).to_be_enabled()
+    expect(page.locator("#headline-card")).to_contain_text(
+        "Stewart Light suggests", timeout=120_000
+    )
+
+
+def test_example_selection_clears_required_field_errors(app_url: str, page: Page) -> None:
+    open_ready_app(app_url, page)
+
+    page.locator("#calculate-button").click()
+    expect(page.locator("#form-errors")).to_contain_text("pH is required")
+
+    page.locator("#example-select").select_option("hyperchloremic")
+
+    expect(page.locator("#form-errors")).to_be_hidden()
+    expect(page.locator("#ph")).to_have_value("7.28")
+    expect(page.locator("#headline-card")).to_contain_text(
+        "Stewart Light suggests", timeout=120_000
+    )
+
+
+def test_reload_selected_example_restores_fixture_values(app_url: str, page: Page) -> None:
+    open_ready_app(app_url, page)
+
+    page.locator("#example-select").select_option("masked")
+    expect(page.locator("#ph")).to_have_value("7.40")
+    page.locator("#ph").fill("7.99")
+
+    page.locator("#load-example-button").click()
+
+    expect(page.locator("#ph")).to_have_value("7.40")
+    expect(page.locator("#headline-card")).to_contain_text(
+        "Stewart Light suggests", timeout=120_000
+    )
+
+
 @pytest.mark.parametrize(
     ("example_key", "expected_text"),
     [
@@ -133,7 +188,6 @@ def test_example_cases_populate_and_calculate(
     open_ready_app(app_url, page)
 
     page.locator("#example-select").select_option(example_key)
-    page.locator("#load-example-button").click()
 
     expect(page.locator("#headline-card")).to_contain_text(
         "Stewart Light suggests", timeout=120_000
@@ -145,7 +199,6 @@ def test_masked_near_normal_sbe_shows_nonzero_components(app_url: str, page: Pag
     open_ready_app(app_url, page)
 
     page.locator("#example-select").select_option("masked")
-    page.locator("#load-example-button").click()
 
     expect(page.locator("#stewart-details")).to_contain_text("SBE_SID")
     expect(page.locator("#stewart-details")).to_contain_text("-6.0 mmol/L")
@@ -159,7 +212,6 @@ def test_partition_chart_segment_order_signs_and_total_marker(app_url: str, page
     open_ready_app(app_url, page)
 
     page.locator("#example-select").select_option("masked")
-    page.locator("#load-example-button").click()
     expect(page.locator(".partition-segment")).to_have_count(3, timeout=120_000)
 
     sid_segment = page.locator(".partition-segment").nth(0)
@@ -189,7 +241,6 @@ def test_lactate_split_and_ph_adjustment_annotation_render(app_url: str, page: P
     open_ready_app(app_url, page)
 
     page.locator("#example-select").select_option("unmeasured-ion")
-    page.locator("#load-example-button").click()
 
     expect(page.locator('.partition-segment[data-component="SBE_lactate"]')).to_have_count(
         1, timeout=120_000
@@ -207,13 +258,11 @@ def test_offset_and_chronic_hypercapnia_visual_annotations(app_url: str, page: P
     open_ready_app(app_url, page)
 
     page.locator("#example-select").select_option("masked")
-    page.locator("#load-example-button").click()
     expect(page.locator('[data-annotation="offset"]')).to_contain_text(
         "components do not cancel to normal"
     )
 
     page.locator("#example-select").select_option("chronic-hypercapnia")
-    page.locator("#load-example-button").click()
     expect(page.locator("#comparison-caution")).to_contain_text("chronic hypercapnia")
     expect(page.locator('[data-annotation="chronic-hypercapnia"]')).to_contain_text(
         "renal chloride loss"
@@ -224,7 +273,6 @@ def test_hypoalbuminemic_example_renders_albumin_component(app_url: str, page: P
     open_ready_app(app_url, page)
 
     page.locator("#example-select").select_option("hypoalbuminemic")
-    page.locator("#load-example-button").click()
 
     expect(page.locator("#headline-card")).to_contain_text(
         "Stewart Light suggests", timeout=120_000
@@ -254,14 +302,15 @@ def test_advanced_bedside_toggle_and_phosphate_flow(app_url: str, page: Page) ->
 
     fill_valid_case(page)
     page.locator("#phosphate").fill("1.2")
+    expect(page.locator("#toggle-advanced")).to_be_checked()
     expect(page.locator("#advanced-bedside-card")).to_be_hidden()
-    page.locator("#toggle-advanced").check()
     submit_and_wait(page)
 
     expect(page.locator("#advanced-bedside-card")).to_be_visible()
     expect(page.locator("#advanced-bedside-card")).to_contain_text(
-        "Supplementary bedside decomposition"
+        "Decomposition with physicochemical approach"
     )
+    expect(page.locator("#advanced-bedside-card")).not_to_contain_text("Supplementary")
     expect(page.locator("#advanced-bedside-details")).to_contain_text("Phosphate effect")
     expect(page.locator("#advanced-bedside-details")).not_to_contain_text("Not provided")
     expect(page.locator("#normalized-details")).to_contain_text("1.2 mmol/L")
@@ -276,10 +325,18 @@ def test_compensation_map_toggle_renders_patient_and_guides(app_url: str, page: 
     submit_and_wait(page)
 
     expect(page.locator("#compensation-map-card")).to_be_visible()
+    expect(page.locator("#compensation-map-title")).to_have_text("Boston compensation map")
     expect(page.locator("#compensation-patient-point")).to_have_attribute("data-pco2", "25.0")
     expect(page.locator("#compensation-patient-point")).to_have_attribute("data-sbe", "-18.0")
     expect(page.locator('.map-guide[data-guide="chronic-respiratory"]')).to_have_count(1)
     expect(page.locator("#compensation-map-note")).to_contain_text("Boston-rule compensation")
+    sbe_axis_label = page.locator(".compensation-map-svg .axis-unit").filter(has_text="SBE")
+    expect(sbe_axis_label).to_be_visible()
+    label_box = sbe_axis_label.bounding_box()
+    svg_box = page.locator(".compensation-map-svg").bounding_box()
+    assert label_box is not None
+    assert svg_box is not None
+    assert label_box["y"] >= svg_box["y"]
 
 
 def test_ag_followup_toxicology_caveat_lab_caveats_and_hydrogen_chip(
@@ -288,7 +345,6 @@ def test_ag_followup_toxicology_caveat_lab_caveats_and_hydrogen_chip(
     open_ready_app(app_url, page)
 
     page.locator("#example-select").select_option("unmeasured-ion")
-    page.locator("#load-example-button").click()
 
     expect(page.locator("#anion-gap-details")).to_contain_text("clearly elevated")
     expect(page.locator("#follow-up-card")).to_be_visible()
@@ -305,8 +361,10 @@ def test_calculation_does_not_persist_inputs_to_url_or_browser_storage(
 ) -> None:
     open_ready_app(app_url, page)
 
-    fill_valid_case(page)
-    submit_and_wait(page)
+    page.locator("#example-select").select_option("unmeasured-ion")
+    expect(page.locator("#headline-card")).to_contain_text(
+        "Stewart Light suggests", timeout=120_000
+    )
 
     assert page.evaluate("window.location.search") == ""
     assert page.evaluate("window.location.hash") == ""
@@ -369,7 +427,6 @@ def test_visuals_are_responsive_without_document_overflow(
     page.locator("#toggle-advanced").check()
     page.locator("#toggle-compensation-map").check()
     page.locator("#example-select").select_option("masked")
-    page.locator("#load-example-button").click()
     expect(page.locator(".partition-svg")).to_be_visible(timeout=120_000)
     expect(page.locator(".teaching-svg")).to_be_visible()
     expect(page.locator("#advanced-bedside-card")).to_be_visible()

@@ -286,6 +286,13 @@ button:focus-visible {
   margin: 4px 0 16px;
 }
 
+.helper-text {
+  margin: -2px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
 .action-row {
   display: flex;
   flex-wrap: wrap;

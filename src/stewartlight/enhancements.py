@@ -107,8 +107,8 @@ def calculate_advanced_bedside_decomposition(
         phosphate_effect=phosphate_effect,
         other_effect=other_effect,
         note=(
-            "Supplementary bedside decomposition: a different educational partition of the same "
-            "metabolic problem, not a competing diagnosis engine."
+            "Bedside physicochemical decomposition: a different partition of the same metabolic "
+            "problem, not a competing diagnosis engine."
         ),
     )
 

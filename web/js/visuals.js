@@ -406,9 +406,7 @@ export function renderCompensationMap(result, refs) {
   const chronicLabel = compact ? "chronic" : "chronic respiratory guide";
   const acidosisLabel = compact ? "met acid" : "metabolic acidosis guide";
   const alkalosisLabel = compact ? "met alk" : "metabolic alkalosis guide";
-  const sbeAxisLabel = compact
-    ? `<text class="axis-unit" x="${left}" y="18">SBE (mmol/L)</text>`
-    : `<text class="axis-unit" x="26" y="${top + 4}" transform="rotate(-90 26 ${top + 4})">SBE (mmol/L)</text>`;
+  const sbeAxisLabel = `<text class="axis-unit" x="${left}" y="${top - 8}">SBE (mmol/L)</text>`;
 
   refs.compensationMap.innerHTML = `
     <svg
@@ -417,9 +415,9 @@ export function renderCompensationMap(result, refs) {
       role="img"
       aria-labelledby="compensation-map-svg-title compensation-map-svg-desc"
     >
-      <title id="compensation-map-svg-title">SBE vs PaCO2 compensation map</title>
+      <title id="compensation-map-svg-title">Boston SBE vs PaCO2 compensation map</title>
       <desc id="compensation-map-svg-desc">
-        Patient point plotted against educational acute respiratory, chronic respiratory, and metabolic compensation guides.
+        Patient point plotted against Boston-style acute respiratory, chronic respiratory, and metabolic compensation guides.
       </desc>
       <line class="axis-line" x1="${left}" x2="${right}" y1="${bottom}" y2="${bottom}" />
       <line class="axis-line" x1="${left}" x2="${left}" y1="${top}" y2="${bottom}" />

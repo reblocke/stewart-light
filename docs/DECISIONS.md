@@ -254,7 +254,7 @@ copying the Stewart Light paper figure or adding a browser charting dependency.
 **Decision:**
 
 Render the visual system in plain SVG from the existing calculation result payload. Use a
-sequential base-excess partition chart as the quantitative source of truth, then add an original
+sequential base-excess partition chart as the primary quantitative view, then add an original
 simplified calliper diagram for conceptual teaching.
 
 **Alternatives considered:**
@@ -267,8 +267,8 @@ simplified calliper diagram for conceptual teaching.
 
 - Browser visuals remain static-site compatible and dependency-free.
 - Playwright can test deterministic chart attributes instead of relying on screenshots.
-- If the teaching diagram and quantitative chart compete, the quantitative partition chart takes
-  priority.
+- If the teaching diagram and quantitative chart compete, keep the partition chart as the
+  quantitative reference for displayed component values.
 
 ## 2026-04-19: Reference-informed overlays stay supplementary
 

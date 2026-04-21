@@ -134,6 +134,31 @@ async function calculateFromForm() {
   }
 }
 
+function selectedExampleKey() {
+  return refs.exampleSelect.value;
+}
+
+function updateExampleButtonState() {
+  refs.buttons.loadExample.disabled = selectedExampleKey() === "";
+}
+
+function loadSelectedExample() {
+  const exampleKey = selectedExampleKey();
+  if (!exampleKey) {
+    updateExampleButtonState();
+    return;
+  }
+
+  populateExample(refs, exampleKey);
+  renderMessages(refs.formErrors, []);
+  renderMessages(refs.formWarnings, []);
+  updateExampleButtonState();
+
+  if (state.engineReady) {
+    calculateFromForm();
+  }
+}
+
 refs.form.addEventListener("submit", (event) => {
   event.preventDefault();
   calculateFromForm();
@@ -144,11 +169,15 @@ refs.buttons.reset.addEventListener("click", () => {
   renderMessages(refs.formErrors, []);
   renderMessages(refs.formWarnings, []);
   clearResults(refs, state);
+  updateExampleButtonState();
 });
 
 refs.buttons.loadExample.addEventListener("click", () => {
-  populateExample(refs, refs.exampleSelect.value);
-  calculateFromForm();
+  loadSelectedExample();
+});
+
+refs.exampleSelect.addEventListener("change", () => {
+  loadSelectedExample();
 });
 
 refs.buttons.retry.addEventListener("click", () => {
@@ -171,4 +200,5 @@ window.addEventListener("resize", () => {
 });
 
 clearResults(refs, state);
+updateExampleButtonState();
 workerClient.start();

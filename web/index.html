@@ -48,9 +48,7 @@
         </p>
         <p>
           This tool keeps Boston-style compensation assessment visible, then partitions measured
-          SBE into chloride/SID, albumin/weak-acid, and residual unmeasured-ion components. It is a
-          bedside teaching approximation, not a full physicochemical reconstruction or a
-          replacement for clinical context.
+          SBE into chloride/SID, albumin/weak-acid, and residual unmeasured-ion components.
         </p>
       </section>
 
@@ -147,12 +145,12 @@
                 <span>Primary Stewart Light view</span>
               </label>
               <label class="checkbox-row">
-                <input id="toggle-advanced" type="checkbox" />
-                <span>Advanced bedside decomposition</span>
+                <input id="toggle-advanced" type="checkbox" checked />
+                <span>Physicochemical decomposition</span>
               </label>
               <label class="checkbox-row">
                 <input id="toggle-compensation-map" type="checkbox" />
-                <span>Compensation map</span>
+                <span>Boston compensation map</span>
               </label>
             </div>
           </fieldset>
@@ -160,12 +158,14 @@
           <div class="example-row">
             <label for="example-select">Example case</label>
             <select id="example-select">
+              <option value="" selected>Choose a teaching case...</option>
               <option value="unmeasured-ion">Unmeasured-ion acidosis</option>
               <option value="hyperchloremic">Hyperchloremic / SID acidosis</option>
               <option value="hypoalbuminemic">Hypoalbuminemic alkalosis</option>
               <option value="masked">Masked near-normal SBE</option>
               <option value="chronic-hypercapnia">Chronic hypercapnia caution</option>
             </select>
+            <p class="helper-text">Selecting a case fills the form with synthetic teaching values.</p>
           </div>
 
           <div id="form-errors" class="message-list error-list" role="alert" hidden></div>
@@ -174,8 +174,8 @@
           <div class="action-row">
             <button id="calculate-button" type="submit" disabled>Calculate</button>
             <button id="reset-button" class="secondary-button" type="button">Reset</button>
-            <button id="load-example-button" class="secondary-button" type="button">
-              Load example
+            <button id="load-example-button" class="secondary-button" type="button" disabled>
+              Reload selected example
             </button>
           </div>
         </form>
@@ -195,12 +195,12 @@
         </article>
 
         <article id="base-excess-card" class="result-block" aria-labelledby="base-excess-title">
-          <h3 id="base-excess-title">What base excess means — and why it can mislead</h3>
+          <h3 id="base-excess-title">What base excess means — and when it is misleading</h3>
           <p class="body-copy">
-            SBE summarizes the metabolic component; it is not a mechanism. SBE near zero can mean
-            true metabolic normality or equal-and-opposite metabolic processes, so electrolytes,
-            albumin, lactate, and clinical context still matter. Stewart Light is useful because it
-            makes those hidden offsets visible instead of leaving them buried in one total number.
+            SBE near zero can mean true metabolic normality or equal-and-opposite metabolic
+            processes, but there are several types of processes that can result in the same HCO3 /
+            SBE. Stewart Light is useful because it differentiates these by separating chloride/SID,
+            albumin, and residual unmeasured-ion effects.
           </p>
           <details id="base-excess-details">
             <summary>Learn more</summary>
@@ -289,10 +289,10 @@
         >
           <h3 id="partition-title">How is the base excess partitioned?</h3>
           <p class="body-copy">
-            The quantitative chart is the source of truth for the decomposition. Each step starts
-            where the previous component ended, so the final marker should align with measured SBE.
-            Large opposing segments explain why a near-normal total can still be educationally
-            important.
+            Base excess partitioning separates the measured metabolic SBE into SID/chloride,
+            albumin/weak-acid, and residual unmeasured-ion components. Segments can point in
+            opposite directions, so a near-normal total may reflect offsetting processes rather than
+            one normal metabolic state.
           </p>
           <div class="visual-scroll" aria-live="polite">
             <div id="partition-chart" class="partition-chart"></div>
@@ -324,17 +324,16 @@
         </article>
 
         <article id="advanced-bedside-card" class="result-block advanced-panel" aria-labelledby="advanced-bedside-title" hidden>
-          <h3 id="advanced-bedside-title">
-            Supplementary bedside decomposition (water / chloride / albumin / other)
-          </h3>
+          <h3 id="advanced-bedside-title">Decomposition with physicochemical approach</h3>
           <p id="advanced-bedside-note" class="body-copy"></p>
           <dl id="advanced-bedside-details" class="detail-list"></dl>
         </article>
 
         <article id="compensation-map-card" class="result-block advanced-panel" aria-labelledby="compensation-map-title" hidden>
-          <h3 id="compensation-map-title">Compensation map (educational)</h3>
+          <h3 id="compensation-map-title">Boston compensation map</h3>
           <p class="body-copy">
-            This overlay is a visual cross-check, not a replacement for Boston-rule compensation.
+            This Boston compensation map is a visual cross-check for expected respiratory
+            compensation, not a replacement for the primary Boston-rule assessment.
           </p>
           <div id="compensation-map" class="compensation-map"></div>
           <p id="compensation-map-note" class="visual-summary"></p>
