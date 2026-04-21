@@ -128,6 +128,7 @@ export function renderResult(payload, refs, state) {
   state.result = result;
   state.normalizedInputs = normalizedInputs;
   state.warnings = plausibleWarnings(normalizedInputs);
+  refs.stepOneDetails.hidden = false;
   for (const card of [
     refs.anionGapCard,
     refs.hydrogenCard,
@@ -262,6 +263,7 @@ export function clearResults(refs, state) {
   refs.comparisonCaution.textContent = "";
   refs.comparisonCaution.hidden = true;
   refs.comparisonExtra.hidden = true;
+  refs.stepOneDetails.hidden = true;
   refs.hydrogenChip.textContent = "";
   refs.hydrogenNote.textContent = "";
   refs.anionGapCard.hidden = true;

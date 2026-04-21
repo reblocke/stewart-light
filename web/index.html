@@ -48,7 +48,10 @@
         </p>
         <p>
           This tool keeps Boston-style compensation assessment visible, then partitions measured
-          SBE into chloride/SID, albumin/weak-acid, and residual unmeasured-ion components.
+          SBE into chloride/SID, albumin/weak-acid, and residual unmeasured-ion components using
+          the Stewart Light method proposed by
+          <a href="https://doi.org/10.1007/s00134-026-08416-3" rel="noreferrer">Duška et al.</a>
+          in the original manuscript.
         </p>
       </section>
 
@@ -196,12 +199,11 @@
             SBE. Stewart Light is useful because it differentiates these by separating chloride/SID,
             albumin, and residual unmeasured-ion effects.
           </p>
-          <p class="body-copy">
-            The examples below are fixed teaching examples, not values calculated from the current
-            inputs.
-          </p>
-          <details id="base-excess-details">
-            <summary>Show fixed teaching examples</summary>
+          <section class="example-processes" aria-labelledby="example-processes-title">
+            <h4 id="example-processes-title">Example Metabolic Processes</h4>
+            <p class="body-copy">
+              These are fixed teaching examples, not values calculated from the current inputs.
+            </p>
             <div class="mini-gallery" aria-label="Base excess mini examples">
               <figure class="mini-schematic" data-mini-example="ui-acidosis">
                 <svg viewBox="0 0 180 78" role="img" aria-label="Isolated UI acidosis mini example">
@@ -231,7 +233,7 @@
               </figure>
             </div>
             <p class="body-copy">A normal total does not guarantee a simple process.</p>
-          </details>
+          </section>
         </article>
 
         <article
@@ -252,7 +254,7 @@
               metabolic SBE is made of.
             </p>
           </div>
-          <div class="comparison-grid">
+          <div id="step-one-details" class="comparison-grid" hidden>
             <section class="comparison-column" aria-labelledby="boston-title">
               <h4 id="boston-title">Boston compensation view</h4>
               <dl id="boston-details" class="detail-list"></dl>

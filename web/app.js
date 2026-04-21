@@ -52,6 +52,7 @@ const refs = {
   comparisonCaution: document.querySelector("#comparison-caution"),
   comparisonExtra: document.querySelector("#comparison-extra"),
   primaryViewCards: document.querySelectorAll(".primary-view-card"),
+  stepOneDetails: document.querySelector("#step-one-details"),
   anionGapCard: document.querySelector("#anion-gap-card"),
   anionGapDetails: document.querySelector("#anion-gap-details"),
   anionGapNotes: document.querySelector("#anion-gap-notes"),

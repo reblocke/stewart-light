@@ -370,6 +370,14 @@ button {
   padding-top: 16px;
 }
 
+.example-processes {
+  margin-top: 16px;
+}
+
+.example-processes h4 {
+  margin: 0 0 10px;
+}
+
 .comparison-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

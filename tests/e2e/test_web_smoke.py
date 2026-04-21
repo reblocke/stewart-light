@@ -49,6 +49,11 @@ def test_app_loads_engine_and_shows_privacy_disclaimer(app_url: str, page: Page)
     expect(page.locator("#why-title")).to_have_text(
         "Stewart Light decomposes multiple metabolic processes."
     )
+    expect(page.locator(".why-panel")).to_contain_text("Duška et al.")
+    expect(
+        page.locator('.why-panel a[href="https://doi.org/10.1007/s00134-026-08416-3"]')
+    ).to_have_count(1)
+    expect(page.locator("#step-one-details")).to_be_hidden()
     expect(page.locator("#hydrogen-card")).to_be_hidden()
     expect(page.locator("#hydrogen-chip")).to_have_text("")
     expect(page.locator("#anion-gap-card")).to_be_hidden()
@@ -72,6 +77,7 @@ def test_valid_manual_submission_returns_structured_results(app_url: str, page: 
         "Clinical context, pH severity, and Boston rules"
     )
     expect(page.locator("#step-one-card .step-label")).to_have_text("Step 1")
+    expect(page.locator("#step-one-details")).to_be_visible()
     expect(page.locator("#boston-title")).to_have_text("Boston compensation view")
     expect(page.locator("#boston-details")).to_contain_text("metabolic acidosis likely")
     expect(page.locator("#hydrogen-card")).to_be_visible()
@@ -331,14 +337,12 @@ def test_base_excess_explanation_and_mini_schematics(app_url: str, page: Page) -
 
     fill_valid_case(page)
     submit_and_wait(page)
-    page.locator("#base-excess-details summary").click()
 
+    expect(page.locator("#base-excess-card")).to_contain_text("Example Metabolic Processes")
     expect(page.locator("#base-excess-card")).to_contain_text(
         "fixed teaching examples, not values calculated from the current inputs"
     )
-    expect(page.locator("#base-excess-details summary")).to_have_text(
-        "Show fixed teaching examples"
-    )
+    expect(page.locator("#base-excess-details")).to_have_count(0)
     expect(page.locator("#base-excess-card")).to_contain_text(
         "A normal total does not guarantee a simple process"
     )
