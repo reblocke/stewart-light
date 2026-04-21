@@ -128,6 +128,15 @@ export function renderResult(payload, refs, state) {
   state.result = result;
   state.normalizedInputs = normalizedInputs;
   state.warnings = plausibleWarnings(normalizedInputs);
+  for (const card of [
+    refs.anionGapCard,
+    refs.hydrogenCard,
+    refs.labCaveatsCard,
+    refs.cautionsCard,
+    refs.normalizedCard,
+  ]) {
+    card.hidden = false;
+  }
 
   refs.headlineCard.replaceChildren();
   const heading = document.createElement("h3");
@@ -255,10 +264,16 @@ export function clearResults(refs, state) {
   refs.comparisonExtra.hidden = true;
   refs.hydrogenChip.textContent = "";
   refs.hydrogenNote.textContent = "";
+  refs.anionGapCard.hidden = true;
+  refs.hydrogenCard.hidden = true;
   refs.followUpCard.hidden = true;
   refs.toxicologyCaveat.textContent = "";
+  refs.toxicologyCaveat.hidden = true;
   refs.advancedBedsideNote.textContent = "";
   refs.compensationMapNote.textContent = "";
+  refs.labCaveatsCard.hidden = true;
+  refs.cautionsCard.hidden = true;
+  refs.normalizedCard.hidden = true;
   applyViewToggles(refs, state);
   refs.partitionSummary.className = "visual-summary empty-state";
   refs.partitionSummary.textContent = "Calculate a case to see component direction and magnitude.";

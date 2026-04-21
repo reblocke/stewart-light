@@ -52,8 +52,10 @@ const refs = {
   comparisonCaution: document.querySelector("#comparison-caution"),
   comparisonExtra: document.querySelector("#comparison-extra"),
   primaryViewCards: document.querySelectorAll(".primary-view-card"),
+  anionGapCard: document.querySelector("#anion-gap-card"),
   anionGapDetails: document.querySelector("#anion-gap-details"),
   anionGapNotes: document.querySelector("#anion-gap-notes"),
+  hydrogenCard: document.querySelector("#hydrogen-card"),
   hydrogenChip: document.querySelector("#hydrogen-chip"),
   hydrogenNote: document.querySelector("#hydrogen-note"),
   followUpCard: document.querySelector("#follow-up-card"),
@@ -71,8 +73,11 @@ const refs = {
   compensationMapCard: document.querySelector("#compensation-map-card"),
   compensationMap: document.querySelector("#compensation-map"),
   compensationMapNote: document.querySelector("#compensation-map-note"),
+  labCaveatsCard: document.querySelector("#lab-caveats-card"),
+  cautionsCard: document.querySelector("#cautions-card"),
   limitationsList: document.querySelector("#limitations-list"),
   cautionsList: document.querySelector("#cautions-list"),
+  normalizedCard: document.querySelector("#normalized-card"),
   normalizedDetails: document.querySelector("#normalized-details"),
 };
 

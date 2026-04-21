@@ -38,7 +38,7 @@
       <section class="why-panel" aria-labelledby="why-title">
         <div>
           <p class="eyebrow">Why this exists</p>
-          <h2 id="why-title">Boston rules show compensation; Stewart Light shows composition.</h2>
+          <h2 id="why-title">Stewart Light decomposes multiple metabolic processes.</h2>
         </div>
         <p>
           Traditional bicarbonate/SBE-plus-compensation reasoning is often clear when one process
@@ -187,14 +187,8 @@
           <h2 id="output-title">Interpretation</h2>
         </div>
 
-        <article id="headline-card" class="result-block" aria-live="polite">
-          <p class="empty-state">
-            Enter values and calculate to review respiratory compensation, then inspect what the
-            metabolic SBE is made of.
-          </p>
-        </article>
-
         <article id="base-excess-card" class="result-block" aria-labelledby="base-excess-title">
+          <p class="step-label">Orientation</p>
           <h3 id="base-excess-title">What base excess means — and when it is misleading</h3>
           <p class="body-copy">
             SBE near zero can mean true metabolic normality or equal-and-opposite metabolic
@@ -202,8 +196,12 @@
             SBE. Stewart Light is useful because it differentiates these by separating chloride/SID,
             albumin, and residual unmeasured-ion effects.
           </p>
+          <p class="body-copy">
+            The examples below are fixed teaching examples, not values calculated from the current
+            inputs.
+          </p>
           <details id="base-excess-details">
-            <summary>Learn more</summary>
+            <summary>Show fixed teaching examples</summary>
             <div class="mini-gallery" aria-label="Base excess mini examples">
               <figure class="mini-schematic" data-mini-example="ui-acidosis">
                 <svg viewBox="0 0 180 78" role="img" aria-label="Isolated UI acidosis mini example">
@@ -237,49 +235,39 @@
         </article>
 
         <article
-          id="comparison-card"
+          id="step-one-card"
           class="result-block primary-view-card"
-          aria-labelledby="comparison-title"
+          aria-labelledby="step-one-title"
         >
-          <h3 id="comparison-title">What does Stewart Light add beyond the Boston rules?</h3>
+          <p class="step-label">Step 1</p>
+          <h3 id="step-one-title">Clinical context, pH severity, and Boston rules</h3>
           <p class="body-copy">
-            Stewart Light keeps the traditional compensation assessment, then partitions the
-            metabolic component into strong-ion/chloride effects, albumin effects, and residual
-            unmeasured ions. The result is a Boston-plus view: compensation on one side, metabolic
-            composition on the other.
+            Start with the clinical picture, pH direction and severity, and expected respiratory
+            compensation. For metabolic acidosis, this includes the Boston/Winter check of expected
+            PaCO2.
           </p>
+          <div id="headline-card" class="step-headline" aria-live="polite">
+            <p class="empty-state">
+              Enter values and calculate to review respiratory compensation, then inspect what the
+              metabolic SBE is made of.
+            </p>
+          </div>
           <div class="comparison-grid">
             <section class="comparison-column" aria-labelledby="boston-title">
-              <h4 id="boston-title">Traditional / Boston view</h4>
+              <h4 id="boston-title">Boston compensation view</h4>
               <dl id="boston-details" class="detail-list"></dl>
             </section>
-            <section class="comparison-column" aria-labelledby="stewart-title">
-              <h4 id="stewart-title">Stewart Light adds</h4>
-              <p id="what-adds" class="body-copy"></p>
-              <dl id="stewart-details" class="detail-list compact-detail-list"></dl>
+            <section
+              id="hydrogen-card"
+              class="comparison-column compact-result"
+              aria-labelledby="hydrogen-title"
+              hidden
+            >
+              <h4 id="hydrogen-title">pH → H+</h4>
+              <p id="hydrogen-chip" class="metric-chip"></p>
+              <p id="hydrogen-note" class="body-copy"></p>
             </section>
           </div>
-          <p id="comparison-caution" class="compact-note" hidden></p>
-          <dl id="comparison-extra" class="detail-list comparison-extra"></dl>
-        </article>
-
-        <article id="anion-gap-card" class="result-block" aria-labelledby="anion-gap-title">
-          <h3 id="anion-gap-title">Anion gap context</h3>
-          <dl id="anion-gap-details" class="detail-list"></dl>
-          <ul id="anion-gap-notes" class="annotation-list"></ul>
-        </article>
-
-        <article id="hydrogen-card" class="result-block compact-result" aria-labelledby="hydrogen-title">
-          <h3 id="hydrogen-title">pH → H+</h3>
-          <p id="hydrogen-chip" class="metric-chip"></p>
-          <p id="hydrogen-note" class="body-copy"></p>
-        </article>
-
-        <article id="follow-up-card" class="result-block" aria-labelledby="follow-up-title" hidden>
-          <h3 id="follow-up-title">Follow-up considerations</h3>
-          <ul id="follow-up-triggers" class="annotation-list"></ul>
-          <ul id="follow-up-prompts"></ul>
-          <p id="toxicology-caveat" class="compact-note"></p>
         </article>
 
         <article
@@ -287,13 +275,32 @@
           class="result-block primary-view-card"
           aria-labelledby="partition-title"
         >
-          <h3 id="partition-title">How is the base excess partitioned?</h3>
+          <p class="step-label">Steps 2-4</p>
+          <h3 id="partition-title">Partition measured SBE</h3>
           <p class="body-copy">
             Base excess partitioning separates the measured metabolic SBE into SID/chloride,
             albumin/weak-acid, and residual unmeasured-ion components. Segments can point in
             opposite directions, so a near-normal total may reflect offsetting processes rather than
             one normal metabolic state.
           </p>
+          <ul class="formula-list" aria-label="Stewart Light partition formulas">
+            <li>
+              <strong>Step 2: Strong-ion effect.</strong>
+              <code>SBE_SID = Na - Cl - SID reference</code>; the reference is 35 mmol/L and is
+              pH-adjusted outside 7.30-7.50, higher in acidemia and lower in alkalemia. Negative
+              values suggest strong-ion acidosis; positive values suggest strong-ion alkalosis.
+            </li>
+            <li>
+              <strong>Step 3: Weak-acid effect.</strong>
+              <code>SBE_Alb = 0.3 * (40 - albumin g/L)</code>; hypoalbuminemia contributes a
+              positive alkalinizing component.
+            </li>
+            <li>
+              <strong>Step 4: Remainder.</strong>
+              <code>SBE_UI = SBE - SBE_SID - SBE_Alb</code>; if lactate is available, it is split
+              from the residual unmeasured-ion component.
+            </li>
+          </ul>
           <div class="visual-scroll" aria-live="polite">
             <div id="partition-chart" class="partition-chart"></div>
           </div>
@@ -301,6 +308,50 @@
             Calculate a case to see component direction and magnitude.
           </p>
           <ul id="partition-annotations" class="annotation-list"></ul>
+        </article>
+
+        <article
+          id="comparison-card"
+          class="result-block primary-view-card"
+          aria-labelledby="comparison-title"
+        >
+          <p class="step-label">Synthesis</p>
+          <h3 id="comparison-title">Synthesize the Boston and Stewart Light views</h3>
+          <p class="body-copy">
+            Put the Boston compensation assessment together with the SID, albumin, and
+            unmeasured-ion components. Clinically decide whether a positive SBE_SID is consistent
+            with a primary chloride-depletion process or an expected renal response to chronic
+            hypercapnia.
+          </p>
+          <div class="comparison-grid">
+            <section class="comparison-column" aria-labelledby="stewart-title">
+              <h4 id="stewart-title">Stewart Light decomposition</h4>
+              <p id="what-adds" class="body-copy"></p>
+              <dl id="stewart-details" class="detail-list compact-detail-list"></dl>
+            </section>
+            <section class="comparison-column" aria-labelledby="synthesis-context-title">
+              <h4 id="synthesis-context-title">Context checks</h4>
+              <p class="body-copy">
+                Reconcile the partition with lactate, anion-gap context, chronic hypercapnia
+                suspicion, lab timing, and the overall clinical picture.
+              </p>
+            </section>
+          </div>
+          <p id="comparison-caution" class="compact-note" hidden></p>
+          <dl id="comparison-extra" class="detail-list comparison-extra"></dl>
+        </article>
+
+        <article id="anion-gap-card" class="result-block" aria-labelledby="anion-gap-title" hidden>
+          <h3 id="anion-gap-title">Anion gap context</h3>
+          <dl id="anion-gap-details" class="detail-list"></dl>
+          <ul id="anion-gap-notes" class="annotation-list"></ul>
+        </article>
+
+        <article id="follow-up-card" class="result-block" aria-labelledby="follow-up-title" hidden>
+          <h3 id="follow-up-title">Follow-up considerations</h3>
+          <ul id="follow-up-triggers" class="annotation-list"></ul>
+          <ul id="follow-up-prompts"></ul>
+          <p id="toxicology-caveat" class="compact-note"></p>
         </article>
 
         <article
@@ -339,7 +390,7 @@
           <p id="compensation-map-note" class="visual-summary"></p>
         </article>
 
-        <article id="lab-caveats-card" class="result-block" aria-labelledby="lab-caveats-title">
+        <article id="lab-caveats-card" class="result-block" aria-labelledby="lab-caveats-title" hidden>
           <h3 id="lab-caveats-title">Laboratory caveats</h3>
           <ul class="annotation-list">
             <li>Use values from the same timepoint and specimen context whenever possible.</li>
@@ -350,13 +401,13 @@
           </ul>
         </article>
 
-        <article class="result-block" aria-labelledby="cautions-title">
+        <article id="cautions-card" class="result-block" aria-labelledby="cautions-title" hidden>
           <h3 id="cautions-title">Limitations and cautions</h3>
           <ul id="limitations-list"></ul>
           <ul id="cautions-list"></ul>
         </article>
 
-        <article class="result-block" aria-labelledby="normalized-title">
+        <article id="normalized-card" class="result-block" aria-labelledby="normalized-title" hidden>
           <h3 id="normalized-title">Normalized input details</h3>
           <dl id="normalized-details" class="detail-list"></dl>
         </article>

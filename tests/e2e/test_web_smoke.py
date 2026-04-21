@@ -46,6 +46,14 @@ def test_app_loads_engine_and_shows_privacy_disclaimer(app_url: str, page: Page)
     console_errors, page_errors = open_ready_app(app_url, page)
 
     expect(page.locator("h1")).to_have_text("Acid-base calculator")
+    expect(page.locator("#why-title")).to_have_text(
+        "Stewart Light decomposes multiple metabolic processes."
+    )
+    expect(page.locator("#hydrogen-card")).to_be_hidden()
+    expect(page.locator("#hydrogen-chip")).to_have_text("")
+    expect(page.locator("#anion-gap-card")).to_be_hidden()
+    expect(page.locator("#lab-caveats-card")).to_be_hidden()
+    expect(page.locator("#normalized-card")).to_be_hidden()
     expect(page.locator("footer")).to_contain_text("not a medical device")
     expect(page.locator("footer")).to_contain_text("No patient data are transmitted")
     expect(page.locator("footer")).to_contain_text("not stored in the URL or local storage")
@@ -60,15 +68,29 @@ def test_valid_manual_submission_returns_structured_results(app_url: str, page: 
     fill_valid_case(page)
     submit_and_wait(page)
 
+    expect(page.locator("#step-one-title")).to_have_text(
+        "Clinical context, pH severity, and Boston rules"
+    )
+    expect(page.locator("#step-one-card .step-label")).to_have_text("Step 1")
+    expect(page.locator("#boston-title")).to_have_text("Boston compensation view")
     expect(page.locator("#boston-details")).to_contain_text("metabolic acidosis likely")
+    expect(page.locator("#hydrogen-card")).to_be_visible()
+    expect(page.locator("#hydrogen-chip")).to_contain_text("pH 7.22")
     expect(page.locator("#stewart-details")).to_contain_text("SBE_UI")
     expect(page.locator("#what-adds")).to_contain_text(
         "Stewart Light keeps the traditional compensation assessment"
     )
     expect(page.locator("#comparison-title")).to_have_text(
-        "What does Stewart Light add beyond the Boston rules?"
+        "Synthesize the Boston and Stewart Light views"
     )
-    expect(page.locator("#partition-title")).to_have_text("How is the base excess partitioned?")
+    expect(page.locator("#comparison-card .step-label")).to_have_text("Synthesis")
+    expect(page.locator("#partition-title")).to_have_text("Partition measured SBE")
+    expect(page.locator("#partition-visual-card .step-label")).to_have_text("Steps 2-4")
+    expect(page.locator("#partition-visual-card")).to_contain_text("Step 2: Strong-ion effect.")
+    expect(page.locator("#partition-visual-card")).to_contain_text("SBE_Alb = 0.3")
+    expect(page.locator("#partition-visual-card")).to_contain_text(
+        "SBE_UI = SBE - SBE_SID - SBE_Alb"
+    )
     expect(page.locator("#teaching-title")).to_have_text(
         "Why can the total look normal even when components are not?"
     )
@@ -82,6 +104,27 @@ def test_valid_manual_submission_returns_structured_results(app_url: str, page: 
 
     assert page_errors == []
     assert console_errors == []
+
+
+def test_result_cards_follow_stewart_light_step_order(app_url: str, page: Page) -> None:
+    open_ready_app(app_url, page)
+
+    fill_valid_case(page)
+    submit_and_wait(page)
+
+    order = page.evaluate(
+        """() => {
+            const cards = Array.from(document.querySelectorAll(".output-panel > article"));
+            return [
+                "base-excess-card",
+                "step-one-card",
+                "partition-visual-card",
+                "comparison-card",
+            ].map((id) => cards.findIndex((card) => card.id === id));
+        }"""
+    )
+    assert order == sorted(order)
+    assert all(index >= 0 for index in order)
 
 
 def test_required_field_validation_blocks_submit_and_focuses_field(
@@ -290,6 +333,12 @@ def test_base_excess_explanation_and_mini_schematics(app_url: str, page: Page) -
     submit_and_wait(page)
     page.locator("#base-excess-details summary").click()
 
+    expect(page.locator("#base-excess-card")).to_contain_text(
+        "fixed teaching examples, not values calculated from the current inputs"
+    )
+    expect(page.locator("#base-excess-details summary")).to_have_text(
+        "Show fixed teaching examples"
+    )
     expect(page.locator("#base-excess-card")).to_contain_text(
         "A normal total does not guarantee a simple process"
     )
