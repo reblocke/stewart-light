@@ -241,8 +241,31 @@ which normalizes units and calls the staged Python package.
 - The browser app remains deployable as static GitHub Pages content.
 - Validation and plausible-range warnings live in the UI, while canonical unit normalization and
   calculation stay in Python.
-- The component visualization is intentionally a placeholder until the dedicated visualization
-  ticket.
+- The result view can evolve in plain HTML/CSS/JavaScript without changing the Python calculation
+  contract.
+
+## 2026-04-21: Result flow follows Stewart Light teaching steps
+
+**Context:**
+
+The initial result view exposed the same calculations but did not clearly map the right-side
+panels to the Stewart Light workflow. Some result-dependent panels also rendered empty structure
+before any calculation had run.
+
+**Decision:**
+
+Organize browser results into an orientation panel, Step 1 for clinical context/pH/Boston-rule
+compensation, Steps 2-4 for measured-SBE partitioning, and a synthesis section for combining the
+Boston and Stewart Light views. Hide result-dependent details before calculation, and display
+fixed base-excess miniatures directly under "Example Metabolic Processes" with explicit wording
+that they are teaching examples rather than input-derived results.
+
+**Consequences:**
+
+- The UI better reflects the workflow proposed by Duška et al. in the Stewart Light manuscript.
+- Pre-calculation empty states show only explanatory copy, not empty result tables or chips.
+- Playwright tests pin the step labels, hidden pre-calculation result panels, and fixed-example
+  wording.
 
 ## 2026-04-19: SVG visualization with quantitative chart priority
 
@@ -270,7 +293,7 @@ simplified calliper diagram for conceptual teaching.
 - If the teaching diagram and quantitative chart compete, keep the partition chart as the
   quantitative reference for displayed component values.
 
-## 2026-04-19: Reference-informed overlays stay supplementary
+## 2026-04-19: Reference-informed overlays remain educational
 
 **Context:**
 
@@ -280,9 +303,9 @@ project should not become a competing framework selector or expert workup engine
 **Decision:**
 
 Keep Stewart Light partitioning and Boston-rule compensation as the primary output. Add corrected
-anion-gap context, pH-to-hydrogen conversion, laboratory caveats, follow-up prompts, a
-water/chloride/albumin/other bedside decomposition, and an SBE-vs-PaCO2 map as supplementary
-overlays.
+anion-gap context, pH-to-hydrogen conversion, laboratory caveats, follow-up prompts, an advanced
+water/chloride/albumin/other bedside decomposition, and an SBE-vs-PaCO2 Boston compensation map as
+optional educational overlays.
 
 **Alternatives considered:**
 
@@ -293,7 +316,7 @@ overlays.
 **Consequences:**
 
 - The default result remains focused on Stewart Light plus Boston compensation.
-- Users can opt into advanced decomposition and compensation-map panels.
+- The advanced decomposition is visible by default; users can opt into the compensation-map panel.
 - Copy must use guarded language: augments, suggests, consistent with, and does not exclude.
 
 ## 2026-04-19: Conservative corrected anion-gap thresholds

@@ -28,8 +28,8 @@ overconfident interpretations.
 - The calculator requires measured blood-gas SBE in mmol/L.
 - PaCO2 is normalized to mmHg before calculation.
 - Albumin is normalized to g/L before calculation.
-- Phosphate is optional, accepted only in mmol/L, and used only for the supplementary bedside
-  decomposition.
+- Phosphate is optional, accepted only in mmol/L, and used only for the advanced bedside
+  decomposition overlay.
 - Browser plausible-range warnings are educational prompts and do not replace local laboratory
   reference ranges.
 - Lactate, when provided, is used only to subpartition residual unmeasured-ion SBE.

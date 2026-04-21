@@ -84,7 +84,7 @@ def calculate_hydrogen_context(input_data: AcidBaseInput) -> HydrogenContext:
 def calculate_advanced_bedside_decomposition(
     input_data: AcidBaseInput,
 ) -> AdvancedBedsideDecomposition:
-    """Return the supplementary water/chloride/albumin/other bedside decomposition."""
+    """Return the advanced water/chloride/albumin/other bedside decomposition."""
 
     water_effect = 0.3 * (input_data.na_mmol_l - 140.0)
     chloride_corrected = input_data.cl_mmol_l * (140.0 / input_data.na_mmol_l)

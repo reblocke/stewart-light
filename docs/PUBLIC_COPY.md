@@ -11,6 +11,8 @@ what is documented.
 - Educational use and clinical reasoning support.
 - Client-side calculation and no intentional storage of patient values.
 - Simplified Stewart Light partitioning with documented assumptions and limitations.
+- Attribution to the Stewart Light manuscript when explaining the app's origin or method.
+- Clear labels when fixed teaching examples are not calculated from current inputs.
 - Local clinical judgment and laboratory context take precedence.
 
 ## Review Triggers

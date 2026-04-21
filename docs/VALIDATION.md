@@ -15,6 +15,8 @@
 - Changes to Pyodide staging or browser behavior require staging plus browser smoke or E2E tests.
 - Changes to clinical interpretation require tests or fixtures that pin the user-visible wording or
   returned payload fields when practical.
+- Changes to result layout should include E2E checks for pre-calculation empty states, step labels,
+  and result-dependent cards becoming visible only after calculation data exists.
 - Any change to assumptions, units, or clinical scope must be recorded in `docs/DECISIONS.md` or an ADR.
 - Browser module refactors should preserve `web/app.js` as the module entrypoint and keep
   `web/pyodide_worker.js` contract-compatible with existing tests.

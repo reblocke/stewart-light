@@ -83,7 +83,7 @@ payload = result.to_dict()
 
 The core calculator uses canonical units only: PaCO2 in mmHg and albumin in g/L. UI-facing unit
 conversion helpers live in `stewartlight.units`. Optional phosphate is accepted in canonical
-`mmol/L` for the supplementary bedside decomposition only.
+`mmol/L` for the advanced bedside decomposition only.
 
 ## Browser App
 
@@ -94,10 +94,16 @@ visual explanation layer. `web/app.js` is the browser module entrypoint; focused
 The browser sends calculations to `web/pyodide_worker.js`, which normalizes units and calls the
 staged Python package through Pyodide.
 
+The result view follows the Stewart Light workflow: Step 1 keeps clinical context, pH severity,
+and Boston-style compensation visible; Steps 2-4 partition measured SBE into SID/chloride,
+albumin/weak-acid, and residual unmeasured-ion components; the synthesis section then combines
+the Boston and Stewart Light views with cautions and context checks. The base-excess teaching
+miniatures are fixed synthetic examples, not values calculated from user-entered inputs.
+
 Advanced educational overlays add corrected anion-gap context, a pH-to-hydrogen teaching chip,
-laboratory caveats, a supplementary water/chloride/albumin/other bedside decomposition, and an
-SBE-vs-PaCO2 compensation map. These augment the primary Stewart Light/Boston output and do not
-replace clinical context.
+laboratory caveats, an advanced water/chloride/albumin/other bedside decomposition, and an
+SBE-vs-PaCO2 Boston compensation map. These augment the primary Stewart Light/Boston output and
+do not replace clinical context.
 
 ## Repository Layout
 

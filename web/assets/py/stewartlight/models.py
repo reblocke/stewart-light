@@ -242,7 +242,7 @@ class HydrogenContext:
 
 @dataclass(frozen=True)
 class AdvancedBedsideDecomposition:
-    """Supplementary water/chloride/albumin/other bedside decomposition."""
+    """Advanced water/chloride/albumin/other bedside decomposition."""
 
     water_effect: float
     chloride_corrected: float
