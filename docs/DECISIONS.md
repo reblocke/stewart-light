@@ -226,9 +226,10 @@ Stewart Light formulas in JavaScript.
 
 **Decision:**
 
-Build a plain HTML/CSS/JavaScript single-page app. Keep `web/app.js` responsible for form state,
-validation, examples, and result rendering. Send calculation requests to `web/pyodide_worker.js`,
-which normalizes units and calls the staged Python package.
+Build a plain HTML/CSS/JavaScript single-page app. Keep `web/app.js` as the module entrypoint, with
+focused browser modules under `web/js/` responsible for examples, input parsing, worker lifecycle,
+result rendering, and SVG visuals. Send calculation requests to `web/pyodide_worker.js`, which
+normalizes units and calls the staged Python package.
 
 **Alternatives considered:**
 
@@ -239,8 +240,8 @@ which normalizes units and calls the staged Python package.
 **Consequences:**
 
 - The browser app remains deployable as static GitHub Pages content.
-- Validation and plausible-range warnings live in the UI, while canonical unit normalization and
-  calculation stay in Python.
+- Validation and plausible-range warnings live in the browser UI modules, while canonical unit
+  normalization and calculation stay in Python.
 - The result view can evolve in plain HTML/CSS/JavaScript without changing the Python calculation
   contract.
 
@@ -302,21 +303,23 @@ project should not become a competing framework selector or expert workup engine
 
 **Decision:**
 
-Keep Stewart Light partitioning and Boston-rule compensation as the primary output. Add corrected
-anion-gap context, pH-to-hydrogen conversion, laboratory caveats, follow-up prompts, an advanced
-water/chloride/albumin/other bedside decomposition, and an SBE-vs-PaCO2 Boston compensation map as
-optional educational overlays.
+Keep Stewart Light partitioning and Boston-rule compensation as the primary output. After
+calculation, show corrected anion-gap context, pH-to-hydrogen conversion, laboratory caveats, and
+follow-up prompts as contextual panels. Keep the advanced water/chloride/albumin/other bedside
+decomposition checked by default, and keep the SBE-vs-PaCO2 Boston compensation map opt-in.
 
 **Alternatives considered:**
 
 - Replace the primary interpretation with a broader Fencl-Stewart or toxicology workup: out of
   scope and more likely to overstate certainty.
-- Put all overlays on screen by default: educationally dense but visually overwhelming.
+- Put every panel, including the compensation map, on screen by default: educationally dense but
+  visually overwhelming.
 
 **Consequences:**
 
 - The default result remains focused on Stewart Light plus Boston compensation.
-- The advanced decomposition is visible by default; users can opt into the compensation-map panel.
+- Default context panels and the advanced decomposition are visible after calculation; users can
+  opt into the compensation-map panel.
 - Copy must use guarded language: augments, suggests, consistent with, and does not exclude.
 
 ## 2026-04-19: Conservative corrected anion-gap thresholds

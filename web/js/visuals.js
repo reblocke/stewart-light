@@ -117,7 +117,11 @@ function visualAnnotations(partition, result) {
   if (partition.sid_reference_adjusted) {
     annotations.push({
       key: "sid-reference-adjusted",
-      text: "SID reference was adjusted because pH was outside the paper's 7.30-7.50 range.",
+      text:
+        "SID reference was adjusted with 35 + 15 * (7.40 - pH), equivalent to " +
+        `1.5 mmol/L per 0.10 pH unit; value used: ${formatNumber(
+          partition.sid_reference,
+        )} mmol/L.`,
     });
   }
   if (partition.lactate) {

@@ -27,11 +27,17 @@ def acid_base_input(**overrides: float | bool | None) -> AcidBaseInput:
 
 def test_sid_reference_inside_and_outside_adjustment_band() -> None:
     inside = calculate_stewart_light(acid_base_input(ph=7.40))
+    low_boundary = calculate_stewart_light(acid_base_input(ph=7.30))
+    high_boundary = calculate_stewart_light(acid_base_input(ph=7.50))
     low_ph = calculate_stewart_light(acid_base_input(ph=7.20, sbe_mmol_l=-8.0))
     high_ph = calculate_stewart_light(acid_base_input(ph=7.60, sbe_mmol_l=8.0))
 
     assert inside.partition.sid_reference == 35.0
     assert inside.partition.sid_reference_adjusted is False
+    assert low_boundary.partition.sid_reference == 35.0
+    assert low_boundary.partition.sid_reference_adjusted is False
+    assert high_boundary.partition.sid_reference == 35.0
+    assert high_boundary.partition.sid_reference_adjusted is False
     assert low_ph.partition.sid_reference == pytest.approx(38.0)
     assert low_ph.partition.sid_reference_adjusted is True
     assert high_ph.partition.sid_reference == pytest.approx(32.0)

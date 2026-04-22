@@ -288,9 +288,10 @@
           <ul class="formula-list" aria-label="Stewart Light partition formulas">
             <li>
               <strong>Step 2: Strong-ion effect.</strong>
-              <code>SBE_SID = Na - Cl - SID reference</code>; the reference is 35 mmol/L and is
-              pH-adjusted outside 7.30-7.50, higher in acidemia and lower in alkalemia. Negative
-              values suggest strong-ion acidosis; positive values suggest strong-ion alkalosis.
+              <code>SBE_SID = Na - Cl - SID reference</code>; outside pH 7.30-7.50, use
+              <code>SID reference = 35 + 15 * (7.40 - pH)</code>, equivalent to 1.5 mmol/L per
+              0.10 pH unit, upward in acidemia and downward in alkalemia. Negative values suggest
+              strong-ion acidosis; positive values suggest strong-ion alkalosis.
             </li>
             <li>
               <strong>Step 3: Weak-acid effect.</strong>

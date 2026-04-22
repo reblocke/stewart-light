@@ -25,6 +25,10 @@ make those offsets visible in settings such as DKA, sepsis, intoxications, vomit
 diuresis, and renal replacement therapy, while remaining a pragmatic bedside approximation rather
 than a full physicochemical reconstruction.
 
+For the strong-ion term, the browser shows the pH-adjusted SID reference explicitly:
+`35 + 15 * (7.40 - pH)` outside pH `7.30-7.50`, equivalent to `1.5 mmol/L` per
+`0.10` pH unit away from `7.40`.
+
 ## Medical Disclaimer
 
 This application is an educational and clinical reasoning aid. It is not a medical device, does
@@ -100,10 +104,11 @@ albumin/weak-acid, and residual unmeasured-ion components; the synthesis section
 the Boston and Stewart Light views with cautions and context checks. The base-excess teaching
 miniatures are fixed synthetic examples, not values calculated from user-entered inputs.
 
-Advanced educational overlays add corrected anion-gap context, a pH-to-hydrogen teaching chip,
-laboratory caveats, an advanced water/chloride/albumin/other bedside decomposition, and an
-SBE-vs-PaCO2 Boston compensation map. These augment the primary Stewart Light/Boston output and
-do not replace clinical context.
+After calculation, corrected anion-gap context, a pH-to-hydrogen teaching chip, laboratory
+caveats, and follow-up considerations appear as context around the primary Stewart Light/Boston
+output. The physicochemical water/chloride/albumin/other decomposition is checked by default; the
+SBE-vs-PaCO2 Boston compensation map is opt-in. These panels augment the primary interpretation
+and do not replace clinical context.
 
 ## Repository Layout
 

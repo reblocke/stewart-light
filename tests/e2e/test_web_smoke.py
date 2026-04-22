@@ -93,6 +93,10 @@ def test_valid_manual_submission_returns_structured_results(app_url: str, page: 
     expect(page.locator("#partition-title")).to_have_text("Partition measured SBE")
     expect(page.locator("#partition-visual-card .step-label")).to_have_text("Steps 2-4")
     expect(page.locator("#partition-visual-card")).to_contain_text("Step 2: Strong-ion effect.")
+    expect(page.locator("#partition-visual-card")).to_contain_text(
+        "SID reference = 35 + 15 * (7.40 - pH)"
+    )
+    expect(page.locator("#partition-visual-card")).to_contain_text("1.5 mmol/L per 0.10 pH unit")
     expect(page.locator("#partition-visual-card")).to_contain_text("SBE_Alb = 0.3")
     expect(page.locator("#partition-visual-card")).to_contain_text(
         "SBE_UI = SBE - SBE_SID - SBE_Alb"
@@ -299,7 +303,10 @@ def test_lactate_split_and_ph_adjustment_annotation_render(app_url: str, page: P
     expect(page.locator("#sbe-total-marker")).to_have_attribute("data-value", "-18.0")
     expect(page.locator('[data-annotation="lactate-split"]')).to_contain_text("Lactate is split")
     expect(page.locator('[data-annotation="sid-reference-adjusted"]')).to_contain_text(
-        "SID reference was adjusted"
+        "35 + 15 * (7.40 - pH)"
+    )
+    expect(page.locator('[data-annotation="sid-reference-adjusted"]')).to_contain_text(
+        "value used: 37.7 mmol/L"
     )
 
 
