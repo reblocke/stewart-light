@@ -1,0 +1,45 @@
+# Stewart Light Calculator
+
+Repository: https://github.com/reblocke/stewart-light
+Purpose: Visualization for Stewart-Light acid-base approach
+Status: No manuscript version is expected. Code and teaching examples are repository-authored unless otherwise noted.
+
+## Human-Readable Entry Points
+- `README.md` is the primary human-facing overview.
+- `llms.txt` is a compact machine-readable index and should not replace the README.
+
+## Repository Layout
+- `.editorconfig`
+- `.python-version`
+- `AGENTS.md`
+- `LICENSE`
+- `Makefile`
+- `README.md`
+- `docs/CLINICAL_SCOPE.md`
+- `docs/DECISIONS.md`
+- `docs/DEPLOYMENT.md`
+- `docs/PRIVACY.md`
+- `docs/PUBLIC_COPY.md`
+- `docs/REFERENCES.md`
+- `docs/VALIDATION.md`
+- `pyproject.toml`
+
+## Data and Reuse Boundaries
+No clinical data expected
+
+## Workflow
+Run Python smoke checks
+
+## Dependencies
+Python dependency metadata
+
+## Citation
+No publication DOI is assigned to this repository. Cite the GitHub repository URL and the commit or release used.
+
+## License
+MIT License for repository code; see `LICENSE`. Third-party and publisher materials remain under their original terms.
+
+## Agent Cautions
+- Do not re-add a README appendix aimed primarily at LLMs; integrate user-facing details into normal README sections.
+- Keep restricted clinical data, private drafts, publisher PDFs, local paths, and generated outputs out of public documentation unless explicitly reviewed.
+- Prefer concise summaries plus links to citable records over copied manuscript or publisher text.

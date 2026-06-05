@@ -133,50 +133,28 @@ the same implementation.
 GitHub Actions runs CI on pull requests and pushes to `main`. The Pages workflow stages the Python
 package and deploys the `web/` directory as the static site artifact.
 
-## LLM and Repository Readiness Notes
+## Repository Notes
 
-### Description
-Visualization for Stewart-Light acid-base approach
+### Project Status
 
-### Instructions
-Start with this README, then inspect the files listed under Repository Layout. For computational workflows, run commands from the repository root and avoid committing generated outputs unless a release explicitly calls for them.
+No manuscript version is expected. Code and teaching examples are repository-authored unless otherwise noted.
 
-### Authors, Funding, and Acknowledgments
-Maintainer: Brian W. Locke (`@reblocke`, ORCID 0000-0002-3588-5238). Preserve any project-specific author, funding, and acknowledgment details already listed elsewhere in the repository or accompanying publication.
+### Data and Reuse
 
-### Repository Layout
-- `.editorconfig`
-- `.python-version`
-- `AGENTS.md`
-- `LICENSE`
-- `Makefile`
-- `README.md`
-- `docs/CLINICAL_SCOPE.md`
-- `docs/DECISIONS.md`
-- `docs/DEPLOYMENT.md`
-- `docs/PRIVACY.md`
-- `docs/PUBLIC_COPY.md`
-- `docs/REFERENCES.md`
-- `docs/VALIDATION.md`
-- `pyproject.toml`
-
-### Data and Codebook
 No clinical data expected
 
-### Workflow / Script Order
-Run Python smoke checks
+### Dependencies
 
-### Dependencies / Environment
 Python dependency metadata
 
 ### Citation
+
 No publication DOI is assigned to this repository. Cite the GitHub repository URL and the commit or release used.
 
 ### License
-Repository license status: MIT. See the root license file when present. Third-party and publisher materials remain under their original terms.
 
-### Manuscript Status
-No manuscript version expected Code and teaching examples owned by repo author
+MIT License for repository code; see `LICENSE`. Third-party and publisher materials remain under their original terms.
 
 ### Contact
+
 Maintainer: Brian W. Locke (`@reblocke`). Use GitHub issues or pull requests for repository-specific questions when the repository is public.
