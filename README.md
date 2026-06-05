@@ -135,6 +135,10 @@ package and deploys the `web/` directory as the static site artifact.
 
 ## Repository Notes
 
+### Description
+
+Visualization for Stewart-Light acid-base approach
+
 ### Project Status
 
 No manuscript version is expected. Code and teaching examples are repository-authored unless otherwise noted.
